@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"encoding/json"
 	"net/http"
 	"os/exec"
 
@@ -19,6 +18,7 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 	var response models.MensagensGenericasRes
 	response.IDLote = string(uuid)
 	response.Count = len(Mgr.Employees)
+	var err error
 
 	for _, mg := range Mgr.Employees {
 		var send models.Send
@@ -31,7 +31,7 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 			error.Message = "Erro ao recuperar o id workplace pelo email: " + mg.Email
 			response.Errors = append(response.Errors, error)
 		} else {
-			ms, err := sendTextMessage(user.ID, Mgr.Message)
+			m, err := sendTextMessage(user.ID, Mgr.Message)
 
 			if err != nil {
 				error.EmployeeID = user.ID
@@ -39,14 +39,12 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 				response.Errors = append(response.Errors, error)
 			} else {
 				send.EmployeeID = user.ID
-				send.MessageID = ms.MessageID
-				send.RecipientID = ms.RecipientID
+				send.MessageID = m.MessageID
+				send.RecipientID = m.RecipientID
 				response.Send = append(response.Send, send)
 			}
 		}
 	}
 
-	w.Header().Set("content-type", "text/json; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(response)
+	responseRequest(w, response, err)
 }

@@ -10,8 +10,6 @@ type Config struct {
 	VerifyToken     string
 	AppSecret       string
 	GraphURL        string
-	ConCaduser      string
-	ConGpessoas     string
 }
 
 // Configuracoes centraliza as opções da api

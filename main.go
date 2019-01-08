@@ -19,18 +19,18 @@ func main() {
 	rotas.HandleFunc("/health", controllers.HealthCheck).Methods("GET")
 
 	//User routes
-	rotas.HandleFunc("/user/{id}", controllers.SendMessage).Methods("GET")
-	rotas.HandleFunc("/user", controllers.SendMessage).Methods("GET")
-	rotas.HandleFunc("/user", controllers.SendMessage).Methods("POST")
-	rotas.HandleFunc("/user", controllers.SendMessage).Methods("PUT")
-	rotas.HandleFunc("/user/{id}", controllers.SendMessage).Methods("DELETE")
+	rotas.HandleFunc("/user/{id}", controllers.GetUserByID).Methods("GET")
+	rotas.HandleFunc("/user", controllers.GetAllUser).Methods("GET")
+	rotas.HandleFunc("/user", controllers.CreateUser).Methods("POST")
+	rotas.HandleFunc("/user", controllers.UpdateUser).Methods("PUT")
+	rotas.HandleFunc("/user/{id}", controllers.DeleteUser).Methods("DELETE")
 
 	//Integration routes
-	rotas.HandleFunc("/integration/{id}", controllers.SendMessage).Methods("GET")
-	rotas.HandleFunc("/integration", controllers.SendMessage).Methods("GET")
-	rotas.HandleFunc("/integration", controllers.SendMessage).Methods("POST")
-	rotas.HandleFunc("/integration", controllers.SendMessage).Methods("PUT")
-	rotas.HandleFunc("/integration/{id}", controllers.SendMessage).Methods("DELETE")
+	rotas.HandleFunc("/integration/{id}", controllers.GetIntegrationByID).Methods("GET")
+	rotas.HandleFunc("/integration", controllers.GetAllIntegration).Methods("GET")
+	rotas.HandleFunc("/integration", controllers.CreateIntegration).Methods("POST")
+	rotas.HandleFunc("/integration", controllers.UpdateIntegration).Methods("PUT")
+	rotas.HandleFunc("/integration/{id}", controllers.DeleteIntegration).Methods("DELETE")
 
 	//Message routes
 	rotas.HandleFunc("/sendMessage", controllers.SendMessage).Methods("POST")

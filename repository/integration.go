@@ -44,7 +44,7 @@ func GetAllIntegration() ([]*models.Integration, error) {
 func CreateIntegration(i models.Integration) (int64, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
-	res, err := conn.Exec(`insert integracao set = nome = ?, descricao = ?, token = ?, secret = ?, verify = ?`, i.Name, i.Description, i.Token, i.Secret, i.Verify)
+	res, err := conn.Exec(`insert integracao set nome = ?, descricao = ?, token = ?, secret = ?, verify = ?`, i.Name, i.Description, i.Token, i.Secret, i.Verify)
 	if err != nil {
 		return 0, err
 	}
@@ -57,7 +57,7 @@ func CreateIntegration(i models.Integration) (int64, error) {
 func UpdateIntegration(i models.Integration) (int64, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
-	res, err := conn.Exec(`update integracao set = nome = ?, descricao = ?, token = ?, secret = ?, verify = ? where id = ?`, i.Name, i.Description, i.Token, i.Secret, i.Verify, i.ID)
+	res, err := conn.Exec(`update integracao set nome = ?, descricao = ?, token = ?, secret = ?, verify = ? where id = ?`, i.Name, i.Description, i.Token, i.Secret, i.Verify, i.ID)
 	if err != nil {
 		return 0, err
 	}

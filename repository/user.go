@@ -44,7 +44,7 @@ func GetAllUser() ([]*models.User, error) {
 func CreateUser(i models.User) (int64, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
-	res, err := conn.Exec(`insert user set = nome = ?, email = ?, senha = ?`, i.Name, i.Email, i.Password)
+	res, err := conn.Exec(`insert user set nome = ?, email = ?, senha = ?`, i.Name, i.Email, i.Password)
 	if err != nil {
 		return 0, err
 	}
@@ -57,7 +57,7 @@ func CreateUser(i models.User) (int64, error) {
 func UpdateUser(i models.User) (int64, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
-	res, err := conn.Exec(`update user set = nome = ?, email = ?, senha = ? where id = ?`, i.Name, i.Email, i.Password, i.ID)
+	res, err := conn.Exec(`update user set nome = ?, email = ?, senha = ? where id = ?`, i.Name, i.Email, i.Password, i.ID)
 	if err != nil {
 		return 0, err
 	}

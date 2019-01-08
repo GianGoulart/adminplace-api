@@ -7,10 +7,6 @@ import (
 
 //HealthCheck ...
 func HealthCheck(w http.ResponseWriter, r *http.Request) {
-	/*validationRequest(w, r)
-	obj := decoderRequest(r, &models.Origin{})
-	responseRequest(w, origin, err)*/
-
 	w.Header().Set("Content-Type", "application/json")
 
 	// Gerando um objeto customizado à partir de um map, e o convertendo em json

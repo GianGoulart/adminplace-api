@@ -17,6 +17,23 @@ import (
 func main() {
 	rotas := mux.NewRouter()
 	rotas.HandleFunc("/health", controllers.HealthCheck).Methods("GET")
+
+	//User routes
+	rotas.HandleFunc("/user/{id}", controllers.SendMessage).Methods("GET")
+	rotas.HandleFunc("/user", controllers.SendMessage).Methods("GET")
+	rotas.HandleFunc("/user", controllers.SendMessage).Methods("POST")
+	rotas.HandleFunc("/user", controllers.SendMessage).Methods("PUT")
+	rotas.HandleFunc("/user/{id}", controllers.SendMessage).Methods("DELETE")
+
+	//Integration routes
+	rotas.HandleFunc("/integration/{id}", controllers.SendMessage).Methods("GET")
+	rotas.HandleFunc("/integration", controllers.SendMessage).Methods("GET")
+	rotas.HandleFunc("/integration", controllers.SendMessage).Methods("POST")
+	rotas.HandleFunc("/integration", controllers.SendMessage).Methods("PUT")
+	rotas.HandleFunc("/integration/{id}", controllers.SendMessage).Methods("DELETE")
+
+	//Message routes
+	rotas.HandleFunc("/sendMessage", controllers.SendMessage).Methods("POST")
 	Port, _ := strconv.Atoi(os.Getenv("PORT"))
 	if Port == 0 {
 		Port = 3001

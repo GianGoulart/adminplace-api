@@ -29,19 +29,19 @@ type MensagensGenericasReq struct {
 type MensagensGenericasRes struct {
 	IDLote string   `json:"idLote"`
 	Count  int      `json:"count"`
-	Envios []Envios `json:"envios"`
-	Erros  []Erros  `json:"erros"`
+	Send   []Send   `json:"send"`
+	Errors []Errors `json:"errors"`
 }
 
-//Envios ...
-type Envios struct {
+//Send ...
+type Send struct {
 	EmployeeID  string `json:"employee_id"`
 	RecipientID string `json:"recipient_id"`
 	MessageID   string `json:"message_id"`
 }
 
-// Erros ...
-type Erros struct {
+// Errors ...
+type Errors struct {
 	EmployeeID string `json:"employee_id"`
 	Message    string `json:"message"`
 }

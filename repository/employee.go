@@ -41,7 +41,7 @@ func GetAllEmployee() ([]*models.Employee, error) {
 }
 
 // CreateEmployee Cria uma nova integração
-func CreateEmployee(i models.Employee) (int64, error) {
+func CreateEmployee(i *models.Employee) (int64, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
 	res, err := conn.Exec(`insert employess set first_name=?, last_name=?, name=?, email=?, job_title=?, department=?, employee_number=?, id_workplace=?, account_claim_time=?, welcome=?`, i.FirstName, i.LastName, i.Name, i.Email, i.JobTitle, i.Department, i.EmployeeNumber, i.IDWorkplace, i.AccountClaimTime, i.Welcome)
@@ -54,7 +54,7 @@ func CreateEmployee(i models.Employee) (int64, error) {
 }
 
 //UpdateEmployee atualiza uma integração
-func UpdateEmployee(i models.Employee) (int64, error) {
+func UpdateEmployee(i *models.Employee) (int64, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
 	res, err := conn.Exec(`update employess set first_name=?, last_name=?, name=?, email=?, job_title=?, department=?, employee_number=?, id_workplace=?, account_claim_time=?, welcome=? where id=?`, i.FirstName, i.LastName, i.Name, i.Email, i.JobTitle, i.Department, i.EmployeeNumber, i.IDWorkplace, i.AccountClaimTime, i.Welcome, i.ID)
@@ -77,4 +77,25 @@ func DeleteEmployee(i int) (int64, error) {
 
 	id, _ := res.RowsAffected()
 	return id, nil
+}
+
+// GetEmployeeByWelcome Consulta colaborador pela flag de bem vindo
+func GetEmployeeByWelcome(welcome bool) ([]*models.Employee, error) {
+	conn := settings.NewConn().ConnectDB().DB
+
+	rows, err := conn.Query(`SELECT id, first_name, last_name, name, email, job_title, department, employee_number, id_workplace, account_claim_time, welcome FROM employee where welcome = %d`, welcome)
+	if err != nil {
+		return nil, err
+	}
+	result := make([]*models.Employee, 0)
+	for rows.Next() {
+		i := new(models.Employee)
+		err := rows.Scan(&i.ID, &i.FirstName, &i.LastName, &i.Name, &i.Email, &i.JobTitle, &i.Department, &i.EmployeeNumber, &i.IDWorkplace, &i.AccountClaimTime, &i.Welcome)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, i)
+	}
+
+	return result, nil
 }

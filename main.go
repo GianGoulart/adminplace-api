@@ -11,6 +11,7 @@ import (
 	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-oci8"
 	_ "github.com/qodrorid/godaemon"
+	"github.com/robfig/cron"
 	"github.com/rs/cors"
 )
 
@@ -45,9 +46,11 @@ func main() {
 	rotas.HandleFunc("/employee", controllers.CreateEmployee).Methods("POST")
 	rotas.HandleFunc("/employee", controllers.UpdateEmployee).Methods("PUT")
 	rotas.HandleFunc("/employee/{id}", controllers.DeleteEmployee).Methods("DELETE")
+	rotas.HandleFunc("/employee/welcome/{bool}", controllers.GetEmployeeByWelcome).Methods("GET")
 
 	//Message routes
 	rotas.HandleFunc("/sendMessage", controllers.SendMessage).Methods("POST")
+
 	Port, _ := strconv.Atoi(os.Getenv("PORT"))
 	if Port == 0 {
 		Port = 3001
@@ -60,6 +63,10 @@ func main() {
 		AllowedMethods: []string{"GET", "POST", "DELETE", "PUT", "OPTIONS"},
 		AllowedHeaders: []string{"Accept", "Content-Type", "Content-Length", "Accept-Encoding", "Authorization", "X-CSRF-Token"},
 	})
+
+	cr := cron.New()
+	cr.AddFunc("0 0 06 * * *", controllers.SendWelcomeMessage)
+	cr.Start()
 
 	http.ListenAndServe(fmt.Sprintf(":%d", Port), c.Handler(rotas))
 }

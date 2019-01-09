@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -50,4 +51,36 @@ func DeleteWelcome(w http.ResponseWriter, r *http.Request) {
 
 	welcome, err := repository.DeleteWelcome(id)
 	responseRequest(w, welcome, err)
+}
+
+// SendWelcomeMessage envia a mensagem de boas vindas para novos colaboradores
+func SendWelcomeMessage() {
+	empl, err := repository.GetEmployeeByWelcome(false)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	msg, err := repository.GetWelcomeByActive(true)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for _, e := range empl {
+		if e.IDWorkplace == "" {
+			wpUser, err := buscaWorkplaceUser(e.Email)
+			if err == nil {
+				_, err = sendTextMessage(wpUser.ID, msg.Text)
+				if err == nil {
+					e.Welcome = true
+					repository.UpdateEmployee(e)
+				}
+			}
+		} else {
+			_, err = sendTextMessage(e.IDWorkplace, msg.Text)
+			if err == nil {
+				e.Welcome = true
+				repository.UpdateEmployee(e)
+			}
+		}
+	}
 }

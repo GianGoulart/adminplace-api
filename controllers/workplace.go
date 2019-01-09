@@ -12,7 +12,7 @@ import (
 	"bitbucket.org/dt_souza/adminplace-api/models"
 )
 
-func buscaWorkplaceUser(email string) (*models.WPUser, *models.Error) {
+func buscaWorkplaceUser(email string) (*models.WPUser, error) {
 	var u models.WPUser
 	config := config.Configuracoes()
 	url := fmt.Sprintf(config.GraphURL + email + "?fields=first_name")
@@ -20,15 +20,13 @@ func buscaWorkplaceUser(email string) (*models.WPUser, *models.Error) {
 	req, err := http.NewRequest("GET", url, nil)
 	req.Header.Set("Authorization", config.PageAccessToken)
 	if err != nil {
-		erro := models.NewError(err.Error(), "Erro Interno do Servidor", 500)
-		return nil, erro
+		return nil, err
 	}
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		erro := models.NewError(err.Error(), "Erro Interno do Servidor", 500)
-		return nil, erro
+		return nil, err
 	}
 	defer resp.Body.Close()
 
@@ -37,18 +35,16 @@ func buscaWorkplaceUser(email string) (*models.WPUser, *models.Error) {
 	if strconv.Itoa(resp.StatusCode) == "200" {
 		jsonErr := json.Unmarshal(data, &u)
 		if jsonErr != nil {
-			erro := models.NewError(err.Error(), "Erro Interno do Servidor", 500)
-			return nil, erro
+			return nil, err
 		}
 	} else {
-		erro := models.NewError("", "Erro ao recuperar id do workplace", 500)
-		return nil, erro
+		return nil, err
 	}
 
 	return &u, nil
 }
 
-func sendTextMessage(id string, text string) (*models.MessageResponse, *models.Error) {
+func sendTextMessage(id string, text string) (*models.MessageResponse, error) {
 	var mr models.MessageSend
 	var ms models.MessageResponse
 	config := config.Configuracoes()
@@ -65,15 +61,13 @@ func sendTextMessage(id string, text string) (*models.MessageResponse, *models.E
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", config.PageAccessToken)
 	if err != nil {
-		erro := models.NewError(err.Error(), "Erro Interno do Servidor", 500)
-		return nil, erro
+		return nil, err
 	}
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		erro := models.NewError(err.Error(), "Erro Interno do Servidor", 500)
-		return nil, erro
+		return nil, err
 	}
 	defer resp.Body.Close()
 
@@ -82,12 +76,10 @@ func sendTextMessage(id string, text string) (*models.MessageResponse, *models.E
 	if strconv.Itoa(resp.StatusCode) == "200" {
 		jsonErr := json.Unmarshal(data, &ms)
 		if jsonErr != nil {
-			erro := models.NewError(err.Error(), "Erro Interno do Servidor", 500)
-			return nil, erro
+			return nil, err
 		}
 	} else {
-		erro := models.NewError(err.Error(), "Erro Interno do Servidor", 500)
-		return nil, erro
+		return nil, err
 	}
 
 	return &ms, nil

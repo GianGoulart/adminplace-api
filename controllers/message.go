@@ -35,7 +35,7 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 
 			if err != nil {
 				error.EmployeeID = user.ID
-				error.Message = "Erro ao encaminhar a mensagem para o colaborador. " + err.DeveloperMessage
+				error.Message = "Erro ao encaminhar a mensagem para o colaborador. "
 				response.Errors = append(response.Errors, error)
 			} else {
 				send.EmployeeID = user.ID

@@ -78,3 +78,17 @@ func DeleteWelcome(i int) (int64, error) {
 	id, _ := res.RowsAffected()
 	return id, nil
 }
+
+// GetWelcomeByActive Consulta texto de boas vindas ativo
+func GetWelcomeByActive(active bool) (*models.Welcome, error) {
+	conn := settings.NewConn().ConnectDB().DB
+
+	row := conn.QueryRow(`select id, text, active from welcome where active = %d`, active)
+	i := new(models.Welcome)
+	err := row.Scan(&i.ID, &i.Text, &i.Active)
+	if err != nil {
+		return nil, err
+	}
+
+	return i, nil
+}

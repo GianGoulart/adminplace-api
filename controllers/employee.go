@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -13,6 +14,7 @@ import (
 func GetEmployeeByID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["id"])
+	fmt.Println(id)
 	employee, err := repository.GetEmployeeByID(id)
 	responseRequest(w, employee, err)
 }
@@ -29,7 +31,7 @@ func CreateEmployee(w http.ResponseWriter, r *http.Request) {
 	obj := decoderRequest(r, &models.Employee{})
 	i := obj.(models.Employee)
 
-	employee, err := repository.CreateEmployee(i)
+	employee, err := repository.CreateEmployee(&i)
 	responseRequest(w, employee, err)
 }
 
@@ -39,7 +41,7 @@ func UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 	obj := decoderRequest(r, &models.Employee{})
 	i := obj.(models.Employee)
 
-	employee, err := repository.UpdateEmployee(i)
+	employee, err := repository.UpdateEmployee(&i)
 	responseRequest(w, employee, err)
 }
 
@@ -49,5 +51,13 @@ func DeleteEmployee(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(vars["id"])
 
 	employee, err := repository.DeleteEmployee(id)
+	responseRequest(w, employee, err)
+}
+
+// GetEmployeeByWelcome rota: /employee/welcome
+func GetEmployeeByWelcome(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	vbool, _ := strconv.ParseBool(vars["bool"])
+	employee, err := repository.GetEmployeeByWelcome(vbool)
 	responseRequest(w, employee, err)
 }

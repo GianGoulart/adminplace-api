@@ -9,6 +9,9 @@ import (
 	"os"
 	"strconv"
 	"time"
+
+	// importacao do mysql
+	_ "github.com/go-sql-driver/mysql"
 )
 
 //App o aplicativo
@@ -26,11 +29,10 @@ var (
 func InitDb() (*App, error) {
 	a := App{}
 	a.Env = os.Getenv("ENV")
-
 	connectionString := fmt.Sprintf("%s", a.GetDNS())
 	var err error
 
-	db, err = sql.Open("oci8", connectionString)
+	db, err = sql.Open("mysql", connectionString)
 	if err != nil {
 		log.Printf("[db/init] - Erro ao tentar abrir conexão (%s). Erro: %s", a.Env, err.Error())
 	}
@@ -53,7 +55,7 @@ func (a *App) OpenConnection() (*App, error) {
 	connectionString := fmt.Sprintf("%s", a.GetDNS())
 	var err error
 
-	a.DB, err = sql.Open("oci8", connectionString)
+	a.DB, err = sql.Open("mysql", connectionString)
 	if err != nil {
 		log.Printf("[db/OpenConnection] - Erro ao tentar abrir conexão (%s). Erro: %s", a.Env, err.Error())
 		return nil, err

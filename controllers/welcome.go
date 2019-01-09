@@ -67,16 +67,17 @@ func SendWelcomeMessage() {
 
 	for _, e := range empl {
 		if e.IDWorkplace == "" {
-			wpUser, err := buscaWorkplaceUser(e.Email)
+			wpUser, err := buscaWorkplaceUser(e.Email, 1)
 			if err == nil {
-				_, err = sendTextMessage(wpUser.ID, msg.Text)
+				_, err = sendTextMessage(wpUser.ID, msg.Text, 1)
 				if err == nil {
 					e.Welcome = true
+					e.IDWorkplace = wpUser.ID
 					repository.UpdateEmployee(e)
 				}
 			}
 		} else {
-			_, err = sendTextMessage(e.IDWorkplace, msg.Text)
+			_, err = sendTextMessage(e.IDWorkplace, msg.Text, 1)
 			if err == nil {
 				e.Welcome = true
 				repository.UpdateEmployee(e)

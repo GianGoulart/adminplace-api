@@ -24,14 +24,14 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 		var send models.Send
 		var error models.Errors
 
-		user, err := buscaWorkplaceUser(mg.Email)
+		user, err := buscaWorkplaceUser(mg.Email, Mgr.IDIntegration)
 
 		if err != nil {
 			error.EmployeeID = ""
 			error.Message = "Erro ao recuperar o id workplace pelo email: " + mg.Email
 			response.Errors = append(response.Errors, error)
 		} else {
-			m, err := sendTextMessage(user.ID, Mgr.Message)
+			m, err := sendTextMessage(user.ID, Mgr.Message, Mgr.IDIntegration)
 
 			if err != nil {
 				error.EmployeeID = user.ID

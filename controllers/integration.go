@@ -27,7 +27,7 @@ func GetAllIntegration(w http.ResponseWriter, r *http.Request) {
 func CreateIntegration(w http.ResponseWriter, r *http.Request) {
 	validationRequest(w, r)
 	obj := decoderRequest(r, &models.Integration{})
-	i := obj.(models.Integration)
+	i := obj.(*models.Integration)
 
 	integration, err := repository.CreateIntegration(i)
 	responseRequest(w, integration, err)
@@ -37,7 +37,7 @@ func CreateIntegration(w http.ResponseWriter, r *http.Request) {
 func UpdateIntegration(w http.ResponseWriter, r *http.Request) {
 	validationRequest(w, r)
 	obj := decoderRequest(r, &models.Integration{})
-	i := obj.(models.Integration)
+	i := obj.(*models.Integration)
 
 	integration, err := repository.UpdateIntegration(i)
 	responseRequest(w, integration, err)

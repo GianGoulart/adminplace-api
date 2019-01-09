@@ -9,7 +9,7 @@ import (
 func GetIntegrationByID(id int) (*models.Integration, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
-	row := conn.QueryRow(`select id, name, description, token, secret, verify, active from integration where id = %d`, id)
+	row := conn.QueryRow(`select id, name, description, token, secret, verify, active from integration where id=?`, id)
 	i := new(models.Integration)
 	err := row.Scan(&i.ID, &i.Name, &i.Description, &i.Token, &i.Secret, &i.Verify, &i.Active)
 	if err != nil {
@@ -41,9 +41,8 @@ func GetAllIntegration() ([]*models.Integration, error) {
 }
 
 // CreateIntegration Cria uma nova integração
-func CreateIntegration(i models.Integration) (int64, error) {
+func CreateIntegration(i *models.Integration) (int64, error) {
 	conn := settings.NewConn().ConnectDB().DB
-
 	res, err := conn.Exec(`insert integration set name=?, description=?, token=?, secret=?, verify=?, active=?`, i.Name, i.Description, i.Token, i.Secret, i.Verify, i.Active)
 	if err != nil {
 		return 0, err
@@ -54,7 +53,7 @@ func CreateIntegration(i models.Integration) (int64, error) {
 }
 
 //UpdateIntegration atualiza uma integração
-func UpdateIntegration(i models.Integration) (int64, error) {
+func UpdateIntegration(i *models.Integration) (int64, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
 	res, err := conn.Exec(`update integration set name=?, description=?, token=?, secret=?, verify=?, active=? where id=?`, i.Name, i.Description, i.Token, i.Secret, i.Verify, i.Active, i.ID)

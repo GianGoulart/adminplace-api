@@ -8,17 +8,21 @@ import (
 	"net/http"
 	"strconv"
 
+	"bitbucket.org/dt_souza/adminplace-api/repository"
+
 	"bitbucket.org/dt_souza/adminplace-api/config"
 	"bitbucket.org/dt_souza/adminplace-api/models"
 )
 
-func buscaWorkplaceUser(email string) (*models.WPUser, error) {
+func buscaWorkplaceUser(email string, idIntegration int) (*models.WPUser, error) {
 	var u models.WPUser
 	config := config.Configuracoes()
 	url := fmt.Sprintf(config.GraphURL + email + "?fields=first_name")
 
+	integration, err := repository.GetIntegrationByID(idIntegration)
+
 	req, err := http.NewRequest("GET", url, nil)
-	req.Header.Set("Authorization", config.PageAccessToken)
+	req.Header.Set("Authorization", "Bearer "+integration.Token)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +48,7 @@ func buscaWorkplaceUser(email string) (*models.WPUser, error) {
 	return &u, nil
 }
 
-func sendTextMessage(id string, text string) (*models.MessageResponse, error) {
+func sendTextMessage(id string, text string, idIntegration int) (*models.MessageResponse, error) {
 	var mr models.MessageSend
 	var ms models.MessageResponse
 	config := config.Configuracoes()
@@ -57,9 +61,11 @@ func sendTextMessage(id string, text string) (*models.MessageResponse, error) {
 	b, _ := json.Marshal(&mr)
 	body := bytes.NewBuffer([]byte(b))
 
+	integration, err := repository.GetIntegrationByID(idIntegration)
+
 	req, err := http.NewRequest("POST", url, body)
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", config.PageAccessToken)
+	req.Header.Set("Authorization", "Bearer "+integration.Token)
 	if err != nil {
 		return nil, err
 	}

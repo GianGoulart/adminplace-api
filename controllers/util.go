@@ -31,7 +31,7 @@ var responseRequest = func(w http.ResponseWriter, obj interface{}, err error) {
 	w.Header().Set("content-type", "text/json; charset=utf-8")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(err)
+		json.NewEncoder(w).Encode(err.Error())
 	} else {
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(obj)

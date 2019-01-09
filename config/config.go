@@ -1,9 +1,5 @@
 package config
 
-import (
-	"os"
-)
-
 // Config monta o retorno padrão
 type Config struct {
 	PageAccessToken string
@@ -15,10 +11,7 @@ type Config struct {
 // Configuracoes centraliza as opções da api
 func Configuracoes() Config {
 	r := Config{
-		PageAccessToken: os.Getenv("PAGEACCESSTOKEN"),
-		VerifyToken:     os.Getenv("VERIFYTOKEN"),
-		AppSecret:       os.Getenv("APPSECRET"),
-		GraphURL:        os.Getenv("GRAPHURL")}
+		GraphURL: "https://graph.facebook.com/v2.6/" /*os.Getenv("GRAPHURL")*/}
 
 	return r
 }

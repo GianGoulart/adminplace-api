@@ -22,7 +22,8 @@ type MensagensGenericasReq struct {
 	Employees []struct {
 		Email string `json:"email"`
 	} `json:"employees"`
-	Message string `json:"message"`
+	Message       string `json:"message"`
+	IDIntegration int    `json:"idIntegration"`
 }
 
 //MensagensGenericasRes é a estrutra de resposta do envio de mensagens por colaborador

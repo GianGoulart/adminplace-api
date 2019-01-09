@@ -39,6 +39,13 @@ func main() {
 	rotas.HandleFunc("/welcome", controllers.UpdateWelcome).Methods("PUT")
 	rotas.HandleFunc("/welcome/{id}", controllers.DeleteWelcome).Methods("DELETE")
 
+	//Employee routes
+	rotas.HandleFunc("/employee/{id}", controllers.GetEmployeeByID).Methods("GET")
+	rotas.HandleFunc("/employee", controllers.GetAllEmployee).Methods("GET")
+	rotas.HandleFunc("/employee", controllers.CreateEmployee).Methods("POST")
+	rotas.HandleFunc("/employee", controllers.UpdateEmployee).Methods("PUT")
+	rotas.HandleFunc("/employee/{id}", controllers.DeleteEmployee).Methods("DELETE")
+
 	//Message routes
 	rotas.HandleFunc("/sendMessage", controllers.SendMessage).Methods("POST")
 	Port, _ := strconv.Atoi(os.Getenv("PORT"))

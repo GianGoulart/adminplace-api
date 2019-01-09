@@ -8,4 +8,5 @@ type Integration struct {
 	Token       string `json:"token"`
 	Secret      string `json:"secret"`
 	Verify      string `json:"verify"`
+	Active      bool   `json:"active"`
 }

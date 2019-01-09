@@ -9,9 +9,9 @@ import (
 func GetUserByID(id int) (*models.User, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
-	row := conn.QueryRow(`select id, nome, email, senha from user where id = %d`, id)
+	row := conn.QueryRow(`select id, name, email, password, active from user where id = %d`, id)
 	i := new(models.User)
-	err := row.Scan(&i.ID, &i.Name, &i.Email, &i.Password)
+	err := row.Scan(&i.ID, &i.Name, &i.Email, &i.Password, &i.Active)
 	if err != nil {
 		return nil, err
 	}
@@ -23,14 +23,14 @@ func GetUserByID(id int) (*models.User, error) {
 func GetAllUser() ([]*models.User, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
-	rows, err := conn.Query(`select id, nome, email, senha from user`)
+	rows, err := conn.Query(`select id, name, email, password, active from user`)
 	if err != nil {
 		return nil, err
 	}
 	result := make([]*models.User, 0)
 	for rows.Next() {
 		i := new(models.User)
-		err := rows.Scan(i.ID, &i.Name, &i.Email, &i.Password)
+		err := rows.Scan(&i.ID, &i.Name, &i.Email, &i.Password, &i.Active)
 		if err != nil {
 			return nil, err
 		}
@@ -44,7 +44,7 @@ func GetAllUser() ([]*models.User, error) {
 func CreateUser(i models.User) (int64, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
-	res, err := conn.Exec(`insert user set nome = ?, email = ?, senha = ?`, i.Name, i.Email, i.Password)
+	res, err := conn.Exec(`insert user set name=?, email=?, password=?, active=?`, i.Name, i.Email, i.Password, i.Active)
 	if err != nil {
 		return 0, err
 	}
@@ -57,7 +57,7 @@ func CreateUser(i models.User) (int64, error) {
 func UpdateUser(i models.User) (int64, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
-	res, err := conn.Exec(`update user set nome = ?, email = ?, senha = ? where id = ?`, i.Name, i.Email, i.Password, i.ID)
+	res, err := conn.Exec(`update user set name=?, email=?, password=?, active=? where id=?`, i.Name, i.Email, i.Password, i.Active, i.ID)
 	if err != nil {
 		return 0, err
 	}
@@ -70,7 +70,7 @@ func UpdateUser(i models.User) (int64, error) {
 func DeleteUser(i int) (int64, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
-	res, err := conn.Exec(`delete from user where id = ?`, i)
+	res, err := conn.Exec(`delete from user where id=?`, i)
 	if err != nil {
 		return 0, err
 	}

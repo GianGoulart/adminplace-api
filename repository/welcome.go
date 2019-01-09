@@ -9,7 +9,7 @@ import (
 func GetWelcomeByID(id int) (*models.Welcome, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
-	row := conn.QueryRow(`select id, text, active from welcome where id = %d`, id)
+	row := conn.QueryRow(`select id, text, active from welcome where id=?`, id)
 	i := new(models.Welcome)
 	err := row.Scan(&i.ID, &i.Text, &i.Active)
 	if err != nil {
@@ -83,7 +83,7 @@ func DeleteWelcome(i int) (int64, error) {
 func GetWelcomeByActive(active bool) (*models.Welcome, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
-	row := conn.QueryRow(`select id, text, active from welcome where active = %d`, active)
+	row := conn.QueryRow(`select id, text, active from welcome where active=?`, active)
 	i := new(models.Welcome)
 	err := row.Scan(&i.ID, &i.Text, &i.Active)
 	if err != nil {

@@ -9,7 +9,7 @@ import (
 func GetEmployeeByID(id int) (*models.Employee, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
-	row := conn.QueryRow(`SELECT id, first_name, last_name, name, email, job_title, department, employee_number, id_workplace, account_claim_time, welcome FROM employee where id = %d`, id)
+	row := conn.QueryRow(`SELECT id, first_name, last_name, name, email, job_title, department, employee_number, id_workplace, account_claim_time, welcome FROM employee where id=?`, id)
 	i := new(models.Employee)
 	err := row.Scan(&i.ID, &i.FirstName, &i.LastName, &i.Name, &i.Email, &i.JobTitle, &i.Department, &i.EmployeeNumber, &i.IDWorkplace, &i.AccountClaimTime, &i.Welcome)
 	if err != nil {
@@ -83,7 +83,7 @@ func DeleteEmployee(i int) (int64, error) {
 func GetEmployeeByWelcome(welcome bool) ([]*models.Employee, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
-	rows, err := conn.Query(`SELECT id, first_name, last_name, name, email, job_title, department, employee_number, id_workplace, account_claim_time, welcome FROM employee where welcome = %d`, welcome)
+	rows, err := conn.Query(`SELECT id, first_name, last_name, name, email, job_title, department, employee_number, id_workplace, account_claim_time, welcome FROM employee where welcome=?`, welcome)
 	if err != nil {
 		return nil, err
 	}

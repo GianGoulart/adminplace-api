@@ -9,7 +9,7 @@ import (
 func GetUserByID(id int) (*models.User, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
-	row := conn.QueryRow(`select id, name, email, password, active from user where id = %d`, id)
+	row := conn.QueryRow(`select id, name, email, password, active from user where id=?`, id)
 	i := new(models.User)
 	err := row.Scan(&i.ID, &i.Name, &i.Email, &i.Password, &i.Active)
 	if err != nil {

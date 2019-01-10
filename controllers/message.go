@@ -65,6 +65,16 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 	response.Count = len(Mgr.Employees)
 	var err error
 
+	var batch models.MessageBatch
+	batch.Text = Mgr.Message
+	batch.IDUserSend = Mgr.IDUserSend
+	batch.IDIntegration = Mgr.IDIntegration
+
+	btc, err := repository.CreateMessageBatch(batch)
+	if err != nil {
+		responseRequest(w, nil, err)
+	}
+
 	for _, mg := range Mgr.Employees {
 		var send models.Send
 		var error models.Errors
@@ -83,6 +93,11 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 				error.Message = "Erro ao encaminhar a mensagem para o colaborador. "
 				response.Errors = append(response.Errors, error)
 			} else {
+				var message models.Message
+				message.IDBatch = btc
+				message.IDWorkplace = user.ID
+				repository.CreateMessage(message)
+
 				send.EmployeeID = user.ID
 				send.MessageID = m.MessageID
 				send.RecipientID = m.RecipientID

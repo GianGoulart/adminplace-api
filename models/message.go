@@ -4,8 +4,8 @@ import "time"
 
 //Message representa o registro de mensagem de um lote
 type Message struct {
-	ID          int       `json:"id"`
-	IDBatch     int       `json:"idBatch"`
+	ID          int64     `json:"id"`
+	IDBatch     int64     `json:"idBatch"`
 	IDWorkplace string    `json:"idWorkplace"`
 	SendTime    time.Time `json:"sendTime"`
 	ReceiveTime time.Time `json:"receiveTime"`
@@ -35,6 +35,7 @@ type MensagensGenericasReq struct {
 		Email string `json:"email"`
 	} `json:"employees"`
 	Message       string `json:"message"`
+	IDUserSend    int    `json:"idUserSend"`
 	IDIntegration int    `json:"idIntegration"`
 }
 

@@ -50,6 +50,15 @@ func main() {
 
 	//Message routes
 	rotas.HandleFunc("/sendMessage", controllers.SendMessage).Methods("POST")
+	rotas.HandleFunc("/message/{id}", controllers.GetMessageByID).Methods("GET")
+	rotas.HandleFunc("/message", controllers.CreateMessage).Methods("POST")
+	rotas.HandleFunc("/message/{id}/receive", controllers.UpdateReceivedMessage).Methods("PUT")
+	rotas.HandleFunc("/message/{id}/read", controllers.UpdateReadedMessage).Methods("PUT")
+
+	//Batch routes
+	rotas.HandleFunc("/batch/{id}", controllers.GetMessageBatchByID).Methods("GET")
+	rotas.HandleFunc("/batch/{id}/message", controllers.GetMessageByBatch).Methods("GET")
+	rotas.HandleFunc("/batch", controllers.CreateMessageBatch).Methods("POST")
 
 	Port, _ := strconv.Atoi(os.Getenv("PORT"))
 	if Port == 0 {

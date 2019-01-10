@@ -67,9 +67,9 @@ func SendWelcomeMessage() {
 
 	for _, e := range empl {
 		if e.IDWorkplace == "" {
-			wpUser, err := buscaWorkplaceUser(e.Email, 1)
+			wpUser, err := buscaWorkplaceUser(e.Email, 2)
 			if err == nil {
-				_, err = sendTextMessage(wpUser.ID, msg.Text, 1)
+				_, err = sendTextMessage(wpUser.ID, msg.Text, 2)
 				if err == nil {
 					e.Welcome = true
 					e.IDWorkplace = wpUser.ID
@@ -77,7 +77,7 @@ func SendWelcomeMessage() {
 				}
 			}
 		} else {
-			_, err = sendTextMessage(e.IDWorkplace, msg.Text, 1)
+			_, err = sendTextMessage(e.IDWorkplace, msg.Text, 2)
 			if err == nil {
 				e.Welcome = true
 				repository.UpdateEmployee(e)

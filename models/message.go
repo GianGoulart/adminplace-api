@@ -1,5 +1,17 @@
 package models
 
+import "time"
+
+//Message representa o registro de mensagem de um lote
+type Message struct {
+	ID          int       `json:"id"`
+	IDBatch     int       `json:"idBatch"`
+	IDWorkplace string    `json:"idWorkplace"`
+	SendTime    time.Time `json:"sendTime"`
+	ReceiveTime time.Time `json:"receiveTime"`
+	ReadTime    time.Time `json:"readTime"`
+}
+
 //MessageSend é a estrutura para envio de mensgens básicas
 type MessageSend struct {
 	MessagingType string `json:"messaging_type"`

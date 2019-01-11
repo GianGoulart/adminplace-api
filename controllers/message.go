@@ -39,7 +39,7 @@ func CreateMessage(w http.ResponseWriter, r *http.Request) {
 // UpdateReceivedMessage rota: /message/{id}/receive
 func UpdateReceivedMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	id, _ := strconv.Atoi(vars["id"])
+	id := vars["id"]
 	message, err := repository.UpdateReceivedMessage(id)
 	responseRequest(w, message, err)
 }
@@ -47,7 +47,7 @@ func UpdateReceivedMessage(w http.ResponseWriter, r *http.Request) {
 // UpdateReadedMessage rota: /message/{id}/read
 func UpdateReadedMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	id, _ := strconv.Atoi(vars["id"])
+	id := vars["id"]
 	message, err := repository.UpdateReadedMessage(id)
 	responseRequest(w, message, err)
 }

@@ -3,6 +3,7 @@ package controllers
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -85,6 +86,7 @@ func sendTextMessage(id string, text string, idIntegration int) (*models.Message
 			return nil, err
 		}
 	} else {
+		err := errors.New("Erro ao enviar mensagem")
 		return nil, err
 	}
 

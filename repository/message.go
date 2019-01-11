@@ -55,7 +55,7 @@ func CreateMessage(i models.Message) (int64, error) {
 }
 
 //UpdateReceivedMessage atualiza as mensagens de um colabroador com a data de recebimento
-func UpdateReceivedMessage(idWorkplace int) (int64, error) {
+func UpdateReceivedMessage(idWorkplace string) (int64, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
 	res, err := conn.Exec(`update message set receive_time=NOW() where id_workplace=?`, idWorkplace)
@@ -68,7 +68,7 @@ func UpdateReceivedMessage(idWorkplace int) (int64, error) {
 }
 
 //UpdateReadedMessage atualiza as mensagens de um colabroador com a data de leitura
-func UpdateReadedMessage(idWorkplace int) (int64, error) {
+func UpdateReadedMessage(idWorkplace string) (int64, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
 	res, err := conn.Exec(`update message set read_time=NOW() where id_workplace=?`, idWorkplace)

@@ -19,6 +19,20 @@ func GetIntegrationByID(id int) (*models.Integration, error) {
 	return i, nil
 }
 
+// GetIntegrationByVerify Consulta integração por verify_token
+func GetIntegrationByVerify(verify string) (*models.Integration, error) {
+	conn := settings.NewConn().ConnectDB().DB
+
+	row := conn.QueryRow(`select id, name, description, token, secret, verify, active from integration where verify=?`, verify)
+	i := new(models.Integration)
+	err := row.Scan(&i.ID, &i.Name, &i.Description, &i.Token, &i.Secret, &i.Verify, &i.Active)
+	if err != nil {
+		return nil, err
+	}
+
+	return i, nil
+}
+
 // GetAllIntegration Consulta todas as integrações
 func GetAllIntegration() ([]*models.Integration, error) {
 	conn := settings.NewConn().ConnectDB().DB

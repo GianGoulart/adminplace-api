@@ -19,6 +19,10 @@ func main() {
 	rotas := mux.NewRouter()
 	rotas.HandleFunc("/health", controllers.HealthCheck).Methods("GET")
 
+	//Webhook
+	rotas.HandleFunc("/webhook/{id}", controllers.GetWebhook).Methods("GET")
+	rotas.HandleFunc("/webhook/{id}", controllers.PostWebhook).Methods("POST")
+
 	//User routes
 	rotas.HandleFunc("/user/{id}", controllers.GetUserByID).Methods("GET")
 	rotas.HandleFunc("/user", controllers.GetAllUser).Methods("GET")
@@ -52,8 +56,8 @@ func main() {
 	rotas.HandleFunc("/sendMessage", controllers.SendMessage).Methods("POST")
 	rotas.HandleFunc("/message/{id}", controllers.GetMessageByID).Methods("GET")
 	rotas.HandleFunc("/message", controllers.CreateMessage).Methods("POST")
-	rotas.HandleFunc("/message/{id}/receive", controllers.UpdateReceivedMessage).Methods("PUT")
-	rotas.HandleFunc("/message/{id}/read", controllers.UpdateReadedMessage).Methods("PUT")
+	//rotas.HandleFunc("/message/{id}/receive", controllers.UpdateReceivedMessage).Methods("PUT")
+	//rotas.HandleFunc("/message/{id}/read", controllers.UpdateReadedMessage).Methods("PUT")
 
 	//Batch routes
 	rotas.HandleFunc("/batch/{id}", controllers.GetMessageBatchByID).Methods("GET")

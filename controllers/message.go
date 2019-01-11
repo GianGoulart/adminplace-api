@@ -37,7 +37,7 @@ func CreateMessage(w http.ResponseWriter, r *http.Request) {
 }
 
 // UpdateReceivedMessage rota: /message/{id}/receive
-func UpdateReceivedMessage(w http.ResponseWriter, r *http.Request) {
+/*func UpdateReceivedMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 	message, err := repository.UpdateReceivedMessage(id)
@@ -50,7 +50,7 @@ func UpdateReadedMessage(w http.ResponseWriter, r *http.Request) {
 	id := vars["id"]
 	message, err := repository.UpdateReadedMessage(id)
 	responseRequest(w, message, err)
-}
+}*/
 
 // SendMessage Envia mensagens para os funcionários
 func SendMessage(w http.ResponseWriter, r *http.Request) {

@@ -64,6 +64,10 @@ func main() {
 	rotas.HandleFunc("/batch/{id}/message", controllers.GetMessageByBatch).Methods("GET")
 	rotas.HandleFunc("/batch", controllers.CreateMessageBatch).Methods("POST")
 
+	//Group routes
+	rotas.HandleFunc("/group/{id}", controllers.GetGroupByID).Methods("GET")
+	rotas.HandleFunc("/group", controllers.GetAllGroup).Methods("GET")
+
 	Port, _ := strconv.Atoi(os.Getenv("PORT"))
 	if Port == 0 {
 		Port = 3001

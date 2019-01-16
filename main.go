@@ -54,6 +54,7 @@ func main() {
 
 	//Message routes
 	rotas.HandleFunc("/sendMessage", controllers.SendMessage).Methods("POST")
+	rotas.HandleFunc("/sendGroupMessage", controllers.SendGroupMessage).Methods("POST")
 	rotas.HandleFunc("/message/{id}", controllers.GetMessageByID).Methods("GET")
 	rotas.HandleFunc("/message", controllers.CreateMessage).Methods("POST")
 	//rotas.HandleFunc("/message/{id}/receive", controllers.UpdateReceivedMessage).Methods("PUT")
@@ -67,6 +68,7 @@ func main() {
 	//Group routes
 	rotas.HandleFunc("/group/{id}", controllers.GetGroupByID).Methods("GET")
 	rotas.HandleFunc("/group", controllers.GetAllGroup).Methods("GET")
+	rotas.HandleFunc("/group/{id}", controllers.DeleteGroupMembers).Methods("DELETE")
 
 	Port, _ := strconv.Atoi(os.Getenv("PORT"))
 	if Port == 0 {

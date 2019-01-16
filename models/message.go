@@ -23,6 +23,14 @@ type MessageSend struct {
 	} `json:"message"`
 }
 
+//GroupMessage é a estrutura para enviar mensagem para um grupo
+type GroupMessage struct {
+	IDUserSend    int    `json:"idUserSend"`
+	IDIntegration int    `json:"idIntegration"`
+	IDGroup       string `json:"idGroup"`
+	Text          string `json:"text"`
+}
+
 //MessageResponse é a estrutura de resposta das mensagens básicas com sucesso
 type MessageResponse struct {
 	RecipientID string `json:"recipient_id"`

@@ -30,7 +30,7 @@ func GetWebhook(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// PostWebhook recebe os eventos de mensagens
+// PostWebhook recebe os eventos de mensagens do facebook
 func PostWebhook(w http.ResponseWriter, r *http.Request) {
 	validationRequest(w, r)
 	vars := mux.Vars(r)

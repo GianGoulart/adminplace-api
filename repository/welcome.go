@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"bitbucket.org/dt_souza/adminplace-api/models"
-	"bitbucket.org/dt_souza/adminplace-api/settings"
+	"bitbucket.org/magazine-ondemand/adminplace-api/models"
+	"bitbucket.org/magazine-ondemand/adminplace-api/settings"
 )
 
 // GetWelcomeByID Consulta texto de boas vindas por id
@@ -80,7 +80,7 @@ func DeleteWelcome(i int) (int64, error) {
 }
 
 // GetWelcomeByActive Consulta texto de boas vindas ativo
-func GetWelcomeByActive(active bool) (*models.Welcome, error) {
+func GetWelcomeByActive(active int) (*models.Welcome, error) {
 	conn := settings.NewConn().ConnectDB().DB
 
 	row := conn.QueryRow(`select id, text, active from welcome where active=?`, active)

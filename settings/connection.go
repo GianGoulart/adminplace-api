@@ -112,6 +112,6 @@ func (a *App) GetDNS() string {
 		dbPort, _ = strconv.Atoi(os.Getenv("DBPORT"))
 	}
 
-	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", user, password, host, dbPort, dbname)
+	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?parseTime=true", user, password, host, dbPort, dbname)
 	return connectionString
 }

@@ -1,11 +1,12 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
-	"bitbucket.org/dt_souza/adminplace-api/models"
-	"bitbucket.org/dt_souza/adminplace-api/repository"
+	"bitbucket.org/magazine-ondemand/adminplace-api/models"
+	"bitbucket.org/magazine-ondemand/adminplace-api/repository"
 	"github.com/gorilla/mux"
 )
 
@@ -17,12 +18,12 @@ func GetMessageByID(w http.ResponseWriter, r *http.Request) {
 	responseRequest(w, message, err)
 }
 
-// GetMessageByBatch rota: /batch/{id}/message
-func GetMessageByBatch(w http.ResponseWriter, r *http.Request) {
+// GetMessageByUser rota: /message/{user}
+func GetMessageByUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	id, _ := strconv.Atoi(vars["id"])
-	batch, err := repository.GetMessageByBatch(id)
-	responseRequest(w, batch, err)
+	user, _ := strconv.Atoi(vars["user"])
+	message, err := repository.GetMessageByUser(user)
+	responseRequest(w, message, err)
 }
 
 // CreateMessage rota: /message
@@ -35,8 +36,8 @@ func CreateMessage(w http.ResponseWriter, r *http.Request) {
 	responseRequest(w, message, err)
 }
 
-// UpdateReceivedMessage rota: /message/{id}/receive
-/*func UpdateReceivedMessage(w http.ResponseWriter, r *http.Request) {
+/*// UpdateReceivedMessage rota: /message/{id}/receive
+func UpdateReceivedMessage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 	message, err := repository.UpdateReceivedMessage(id)
@@ -49,8 +50,8 @@ func UpdateReadedMessage(w http.ResponseWriter, r *http.Request) {
 	id := vars["id"]
 	message, err := repository.UpdateReadedMessage(id)
 	responseRequest(w, message, err)
-}*/
-
+}
+*/
 // SendMessage Envia mensagens para os funcionários
 func SendMessage(w http.ResponseWriter, r *http.Request) {
 	validationRequest(w, r)
@@ -95,6 +96,7 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 				var message models.Message
 				message.IDBatch = btc
 				message.IDWorkplace = user.ID
+				fmt.Println(message)
 				repository.CreateMessage(message)
 
 				send.EmployeeID = user.ID
@@ -146,8 +148,8 @@ func SendGroupMessage(w http.ResponseWriter, r *http.Request) {
 			var message models.Message
 			message.IDBatch = btc
 			message.IDWorkplace = user.ID
+			fmt.Println(message)
 			repository.CreateMessage(message)
-
 			send.EmployeeID = user.ID
 			send.MessageID = m.MessageID
 			send.RecipientID = m.RecipientID

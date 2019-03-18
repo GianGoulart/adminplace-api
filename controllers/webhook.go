@@ -6,8 +6,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"bitbucket.org/dt_souza/adminplace-api/repository"
-	"bitbucket.org/dt_souza/auditoria-remota/models"
+	"bitbucket.org/magazine-ondemand/adminplace-api/models"
+	"bitbucket.org/magazine-ondemand/adminplace-api/repository"
+
 	"github.com/gorilla/mux"
 )
 

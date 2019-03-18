@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"bitbucket.org/dt_souza/adminplace-api/models"
-	"bitbucket.org/dt_souza/adminplace-api/repository"
+	"bitbucket.org/magazine-ondemand/adminplace-api/models"
+	"bitbucket.org/magazine-ondemand/adminplace-api/repository"
 	"github.com/gorilla/mux"
 )
 
@@ -14,9 +14,18 @@ import (
 func GetEmployeeByID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["id"])
-	fmt.Println(id)
 	employee, err := repository.GetEmployeeByID(id)
 	responseRequest(w, employee, err)
+}
+
+//GetEmployeeByAny
+func GetEmployeeByAny(w http.ResponseWriter, r *http.Request) {
+	validationRequest(w, r)
+	obj := decoderRequest(r, &models.Employee{})
+	i := obj.(*models.Employee)
+	employee, err := repository.GetEmployeeByAny(i)
+	responseRequest(w, employee, err)
+
 }
 
 // GetAllEmployee rota: /employee
@@ -29,9 +38,8 @@ func GetAllEmployee(w http.ResponseWriter, r *http.Request) {
 func CreateEmployee(w http.ResponseWriter, r *http.Request) {
 	validationRequest(w, r)
 	obj := decoderRequest(r, &models.Employee{})
-	i := obj.(models.Employee)
-
-	employee, err := repository.CreateEmployee(&i)
+	i := obj.(*models.Employee)
+	employee, err := repository.CreateEmployee(i)
 	responseRequest(w, employee, err)
 }
 
@@ -39,9 +47,9 @@ func CreateEmployee(w http.ResponseWriter, r *http.Request) {
 func UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 	validationRequest(w, r)
 	obj := decoderRequest(r, &models.Employee{})
-	i := obj.(models.Employee)
+	i := obj.(*models.Employee)
 
-	employee, err := repository.UpdateEmployee(&i)
+	employee, err := repository.UpdateEmployee(i)
 	responseRequest(w, employee, err)
 }
 
@@ -49,7 +57,7 @@ func UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 func DeleteEmployee(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["id"])
-
+	fmt.Println(id)
 	employee, err := repository.DeleteEmployee(id)
 	responseRequest(w, employee, err)
 }
@@ -57,7 +65,7 @@ func DeleteEmployee(w http.ResponseWriter, r *http.Request) {
 // GetEmployeeByWelcome rota: /employee/welcome
 func GetEmployeeByWelcome(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	vbool, _ := strconv.ParseBool(vars["bool"])
+	vbool, _ := strconv.Atoi(vars["bool"])
 	employee, err := repository.GetEmployeeByWelcome(vbool)
 	responseRequest(w, employee, err)
 }

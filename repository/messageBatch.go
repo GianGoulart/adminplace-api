@@ -1,8 +1,11 @@
 package repository
 
 import (
-	"bitbucket.org/dt_souza/adminplace-api/models"
-	"bitbucket.org/dt_souza/adminplace-api/settings"
+	"fmt"
+	"strconv"
+
+	"bitbucket.org/magazine-ondemand/adminplace-api/models"
+	"bitbucket.org/magazine-ondemand/adminplace-api/settings"
 )
 
 // GetMessageBatchByID Consulta um lote de mensagens por id
@@ -30,4 +33,37 @@ func CreateMessageBatch(i models.MessageBatch) (int64, error) {
 
 	id, _ := res.LastInsertId()
 	return id, nil
+}
+
+// GetMessageBatchByAny Consulta usuário por qualquer dados
+func GetMessageBatchByAny(i *models.MessageBatch) ([]*models.MessageBatch, error) {
+	conn := settings.NewConn().ConnectDB().DB
+
+	sql := fmt.Sprintf(`SELECT * FROM message_batch where id_user_send = ` + strconv.Itoa(i.IDUserSend))
+	if i.ID > 0 {
+		sql = sql + ` AND id =` + strconv.Itoa(i.ID)
+	}
+	if i.IDIntegration > 0 {
+		sql = sql + ` AND id_integration = ` + strconv.Itoa(i.IDIntegration)
+	}
+
+	fmt.Println(sql)
+	rows, err := conn.Query(sql)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	result := make([]*models.MessageBatch, 0)
+	for rows.Next() {
+		i := new(models.MessageBatch)
+		err := rows.Scan(&i.ID, &i.Text, &i.IDUserSend, &i.SendTime, &i.IDIntegration)
+		if err != nil {
+			fmt.Println(err)
+			return nil, err
+		}
+		result = append(result, i)
+	}
+	return result, nil
+
 }

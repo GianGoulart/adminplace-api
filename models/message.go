@@ -12,6 +12,16 @@ type Message struct {
 	ReadTime    time.Time `json:"readTime"`
 }
 
+//StatusMessage representa o registro de mensagem de um lote
+type StatusMessage struct {
+	IDBatch       int64 `json:"idBatch"`
+	IDIntegration int64 `json:"idIntegration"`
+	IDUserSend    int   `json:"idUserSend"`
+	Sends         int   `json:"sends"`
+	Receives      int   `json:"receives"`
+	ReadsMsgs     int   `json:"readsMsgs"`
+}
+
 //MessageSend é a estrutura para envio de mensgens básicas
 type MessageSend struct {
 	MessagingType string `json:"messaging_type"`

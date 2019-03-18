@@ -6,5 +6,12 @@ type User struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
-	Active   bool   `json:"active"`
+	Group    string `json:"groupAccess"`
+	Active   int    `json:"active"`
+}
+
+//Authenticate estrutura
+type Authenticate struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }

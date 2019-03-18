@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -10,13 +11,13 @@ const (
 )
 
 var decoderRequest = func(request *http.Request, obj interface{}) interface{} {
-	decoder := json.NewDecoder(request.Body)
+	body, _ := ioutil.ReadAll(request.Body)
 
-	if err := decoder.Decode(&obj); err != nil {
+	err := json.Unmarshal(body, &obj)
+	if err != nil {
 		panic(err)
 	}
 	defer request.Body.Close()
-
 	return obj
 }
 

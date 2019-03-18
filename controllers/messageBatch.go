@@ -1,11 +1,12 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
-	"bitbucket.org/dt_souza/adminplace-api/models"
-	"bitbucket.org/dt_souza/adminplace-api/repository"
+	"bitbucket.org/magazine-ondemand/adminplace-api/models"
+	"bitbucket.org/magazine-ondemand/adminplace-api/repository"
 	"github.com/gorilla/mux"
 )
 
@@ -24,5 +25,16 @@ func CreateMessageBatch(w http.ResponseWriter, r *http.Request) {
 	btc := obj.(models.MessageBatch)
 
 	batch, err := repository.CreateMessageBatch(btc)
+	responseRequest(w, batch, err)
+}
+
+// GetMessageBatchByAny rota: /batch/{id}/message
+func GetMessageBatchByAny(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("vem")
+	validationRequest(w, r)
+	obj := decoderRequest(r, &models.MessageBatch{})
+	btc := obj.(*models.MessageBatch)
+
+	batch, err := repository.GetMessageBatchByAny(btc)
 	responseRequest(w, batch, err)
 }

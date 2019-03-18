@@ -8,10 +8,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"bitbucket.org/dt_souza/adminplace-api/config"
-	"bitbucket.org/dt_souza/adminplace-api/models"
+	"bitbucket.org/magazine-ondemand/adminplace-api/config"
+	"bitbucket.org/magazine-ondemand/adminplace-api/models"
 
-	"bitbucket.org/dt_souza/adminplace-api/repository"
+	"bitbucket.org/magazine-ondemand/adminplace-api/repository"
 	"github.com/gorilla/mux"
 )
 
@@ -85,7 +85,6 @@ func GetAllGroup(w http.ResponseWriter, r *http.Request) {
 		err = errors.New("Erro ao consultar grupos")
 		fmt.Println(err)
 	}
-
 	responseRequest(w, g, err)
 }
 

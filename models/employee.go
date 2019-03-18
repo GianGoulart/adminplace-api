@@ -14,5 +14,5 @@ type Employee struct {
 	EmployeeNumber   int       `json:"employeeNumber"`
 	IDWorkplace      string    `json:"idWorkplace"`
 	AccountClaimTime time.Time `json:"accountClaimTime"`
-	Welcome          bool      `json:"welcome"`
+	Welcome          int       `json:"welcome"`
 }

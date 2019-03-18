@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"bitbucket.org/dt_souza/adminplace-api/models"
-	"bitbucket.org/dt_souza/adminplace-api/repository"
+	"bitbucket.org/magazine-ondemand/adminplace-api/models"
+	"bitbucket.org/magazine-ondemand/adminplace-api/repository"
 	"github.com/gorilla/mux"
 )
 
@@ -55,12 +55,12 @@ func DeleteWelcome(w http.ResponseWriter, r *http.Request) {
 
 // SendWelcomeMessage envia a mensagem de boas vindas para novos colaboradores
 func SendWelcomeMessage() {
-	empl, err := repository.GetEmployeeByWelcome(false)
+	empl, err := repository.GetEmployeeByWelcome(0)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	msg, err := repository.GetWelcomeByActive(true)
+	msg, err := repository.GetWelcomeByActive(1)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -71,7 +71,7 @@ func SendWelcomeMessage() {
 			if err == nil {
 				_, err = sendTextMessage(wpUser.ID, msg.Text, 2)
 				if err == nil {
-					e.Welcome = true
+					e.Welcome = 1
 					e.IDWorkplace = wpUser.ID
 					repository.UpdateEmployee(e)
 				}
@@ -79,7 +79,7 @@ func SendWelcomeMessage() {
 		} else {
 			_, err = sendTextMessage(e.IDWorkplace, msg.Text, 2)
 			if err == nil {
-				e.Welcome = true
+				e.Welcome = 1
 				repository.UpdateEmployee(e)
 			}
 		}

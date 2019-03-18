@@ -1,8 +1,10 @@
 package repository
 
 import (
-	"bitbucket.org/dt_souza/adminplace-api/models"
-	"bitbucket.org/dt_souza/adminplace-api/settings"
+	"fmt"
+
+	"bitbucket.org/magazine-ondemand/adminplace-api/models"
+	"bitbucket.org/magazine-ondemand/adminplace-api/settings"
 )
 
 // GetMessageByID Consulta uma mensagem por id
@@ -13,6 +15,37 @@ func GetMessageByID(id int) (*models.Message, error) {
 	i := new(models.Message)
 	err := row.Scan(&i.ID, &i.IDBatch, &i.IDWorkplace, &i.SendTime, &i.ReceiveTime, &i.ReadTime)
 	if err != nil {
+		return nil, err
+	}
+
+	return i, nil
+}
+
+// GetMessageByUser Consulta uma mensagem por usuario
+func GetMessageByUser(idUser int) (*models.StatusMessage, error) {
+	conn := settings.NewConn().ConnectDB().DB
+
+	row := conn.QueryRow(`SELECT 	a.id_batch,
+									b.id_integration,
+									b.id_user_send,
+									COUNT(a.send_time) Sends,
+									COUNT(a.receive_time) Receives,
+									COUNT(a.read_time) ReadsMsgs
+							FROM message a, message_batch b 
+							where a.id_batch = b.id
+							and b.id_user_send = ?
+							and b.send_time = (SELECT MAX(z.send_time) 
+												FROM message y, message_batch z 
+												where y.id_batch = z.id
+												and z.id_user_send = ?)
+							GROUP BY 	a.id_batch,
+									b.id_integration,
+									b.id_user_send`, idUser, idUser)
+	i := new(models.StatusMessage)
+
+	err := row.Scan(&i.IDBatch, &i.IDIntegration, &i.IDUserSend, &i.Sends, &i.Receives, &i.ReadsMsgs)
+	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 
@@ -44,12 +77,11 @@ func GetMessageByBatch(idBatch int) ([]*models.Message, error) {
 // CreateMessage Cadastra uma nova mensagem
 func CreateMessage(i models.Message) (int64, error) {
 	conn := settings.NewConn().ConnectDB().DB
-
 	res, err := conn.Exec(`insert message set id_batch=?, id_workplace=?, send_time=NOW()`, i.IDBatch, i.IDWorkplace)
+
 	if err != nil {
 		return 0, err
 	}
-
 	id, _ := res.LastInsertId()
 	return id, nil
 }

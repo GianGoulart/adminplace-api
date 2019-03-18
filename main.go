@@ -7,7 +7,7 @@ import (
 	"os"
 	"strconv"
 
-	"bitbucket.org/dt_souza/adminplace-api/controllers"
+	"bitbucket.org/magazine-ondemand/adminplace-api/controllers"
 	"github.com/gorilla/mux"
 	_ "github.com/mattn/go-oci8"
 	_ "github.com/qodrorid/godaemon"
@@ -23,8 +23,15 @@ func main() {
 	rotas.HandleFunc("/webhook/{id}", controllers.GetWebhook).Methods("GET")
 	rotas.HandleFunc("/webhook/{id}", controllers.PostWebhook).Methods("POST")
 
+	//Autenticação
+	rotas.HandleFunc("/auth", controllers.Authenticate).Methods("POST")
+
+	//Enviar Email
+	rotas.HandleFunc("/sendEmail/{email}", controllers.SendEmail).Methods("GET")
+
 	//User routes
 	rotas.HandleFunc("/user/{id}", controllers.GetUserByID).Methods("GET")
+	rotas.HandleFunc("/user/search", controllers.GetUserByAny).Methods("POST")
 	rotas.HandleFunc("/user", controllers.GetAllUser).Methods("GET")
 	rotas.HandleFunc("/user", controllers.CreateUser).Methods("POST")
 	rotas.HandleFunc("/user", controllers.UpdateUser).Methods("PUT")
@@ -32,6 +39,7 @@ func main() {
 
 	//Integration routes
 	rotas.HandleFunc("/integration/{id}", controllers.GetIntegrationByID).Methods("GET")
+	rotas.HandleFunc("/integration/search", controllers.GetIntegrationByAny).Methods("POST")
 	rotas.HandleFunc("/integration", controllers.GetAllIntegration).Methods("GET")
 	rotas.HandleFunc("/integration", controllers.CreateIntegration).Methods("POST")
 	rotas.HandleFunc("/integration", controllers.UpdateIntegration).Methods("PUT")
@@ -46,6 +54,7 @@ func main() {
 
 	//Employee routes
 	rotas.HandleFunc("/employee/{id}", controllers.GetEmployeeByID).Methods("GET")
+	rotas.HandleFunc("/employee/search", controllers.GetEmployeeByAny).Methods("POST")
 	rotas.HandleFunc("/employee", controllers.GetAllEmployee).Methods("GET")
 	rotas.HandleFunc("/employee", controllers.CreateEmployee).Methods("POST")
 	rotas.HandleFunc("/employee", controllers.UpdateEmployee).Methods("PUT")
@@ -56,13 +65,14 @@ func main() {
 	rotas.HandleFunc("/sendMessage", controllers.SendMessage).Methods("POST")
 	rotas.HandleFunc("/sendGroupMessage", controllers.SendGroupMessage).Methods("POST")
 	rotas.HandleFunc("/message/{id}", controllers.GetMessageByID).Methods("GET")
+	rotas.HandleFunc("/message/search", controllers.GetMessageBatchByAny).Methods("POST")
+	rotas.HandleFunc("/message/{user}/lastMessage", controllers.GetMessageByUser).Methods("GET")
 	rotas.HandleFunc("/message", controllers.CreateMessage).Methods("POST")
 	//rotas.HandleFunc("/message/{id}/receive", controllers.UpdateReceivedMessage).Methods("PUT")
 	//rotas.HandleFunc("/message/{id}/read", controllers.UpdateReadedMessage).Methods("PUT")
 
 	//Batch routes
 	rotas.HandleFunc("/batch/{id}", controllers.GetMessageBatchByID).Methods("GET")
-	rotas.HandleFunc("/batch/{id}/message", controllers.GetMessageByBatch).Methods("GET")
 	rotas.HandleFunc("/batch", controllers.CreateMessageBatch).Methods("POST")
 
 	//Group routes

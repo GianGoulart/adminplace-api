@@ -9,10 +9,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"bitbucket.org/dt_souza/adminplace-api/repository"
+	"bitbucket.org/magazine-ondemand/adminplace-api/repository"
 
-	"bitbucket.org/dt_souza/adminplace-api/config"
-	"bitbucket.org/dt_souza/adminplace-api/models"
+	"bitbucket.org/magazine-ondemand/adminplace-api/config"
+	"bitbucket.org/magazine-ondemand/adminplace-api/models"
 )
 
 func buscaWorkplaceUser(email string, idIntegration int) (*models.WPUser, error) {

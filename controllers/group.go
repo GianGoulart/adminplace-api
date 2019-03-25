@@ -121,6 +121,7 @@ func DeleteGroupMembers(w http.ResponseWriter, r *http.Request) {
 	responseRequest(w, gm, err)
 }
 
+//GetGroupMembers retorna os membros de um grupo
 func GetGroupMembers(idGroup string, token string, page string) models.GroupMembers {
 	var gm models.GroupMembers
 	config := config.Configuracoes()
@@ -154,6 +155,7 @@ func GetGroupMembers(idGroup string, token string, page string) models.GroupMemb
 	return gm
 }
 
+//DeleteMember deleta os membros de um grupo
 func DeleteMember(idGroup string, idUser string, token string) {
 	config := config.Configuracoes()
 	url := fmt.Sprintf(config.GraphURL + idGroup + "/members/" + idUser)

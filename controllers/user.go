@@ -18,6 +18,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/ses"
 )
 
+//Config sendEmail
 const (
 	Sender  = "giangoulart1994@gmail.com"
 	CharSet = "UTF-8"
@@ -39,7 +40,7 @@ func Authenticate(w http.ResponseWriter, r *http.Request) {
 	responseRequest(w, user, err)
 }
 
-//SendEmail
+// SendEmail rota: /sendEmail/{email}
 func SendEmail(w http.ResponseWriter, r *http.Request) {
 	validationRequest(w, r)
 	vars := mux.Vars(r)
@@ -126,7 +127,7 @@ func GetAllUser(w http.ResponseWriter, r *http.Request) {
 	responseRequest(w, user, err)
 }
 
-//GetUserByAny
+//GetUserByAny rota: /user/search
 func GetUserByAny(w http.ResponseWriter, r *http.Request) {
 	validationRequest(w, r)
 	obj := decoderRequest(r, &models.User{})

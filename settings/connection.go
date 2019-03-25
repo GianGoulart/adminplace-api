@@ -105,11 +105,11 @@ func (a *App) GetDNS() string {
 		host = fmt.Sprintf("%v", database["DBHOST"])
 		dbPort, _ = strconv.Atoi(fmt.Sprintf("%v", database["DBPORT"]))
 	} else {
-		user = os.Getenv("DBUSER")
-		password = os.Getenv("DBPASSWORD")
-		dbname = os.Getenv("DBNAME")
-		host = os.Getenv("DBHOST")
-		dbPort, _ = strconv.Atoi(os.Getenv("DBPORT"))
+		user = "root"                    //os.Getenv("DBUSER")
+		password = "#Gian2803"           //os.Getenv("DBPASSWORD")
+		dbname = "WorkplaceDB"           //os.Getenv("DBNAME")
+		host = "localhost"               //os.Getenv("DBHOST")
+		dbPort, _ = strconv.Atoi("3306") //os.Getenv("DBPORT"))
 	}
 
 	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?parseTime=true", user, password, host, dbPort, dbname)

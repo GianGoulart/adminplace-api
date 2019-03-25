@@ -1,22 +1,21 @@
-package main
+package tests
 
 import (
-	"fmt"
-	"log"
-	"net/http"
 	"os"
-	"strconv"
+	"testing"
 
 	"bitbucket.org/magazine-ondemand/adminplace-api/controllers"
 	"github.com/gorilla/mux"
-	_ "github.com/mattn/go-oci8"
-	_ "github.com/qodrorid/godaemon"
-	"github.com/robfig/cron"
-	"github.com/rs/cors"
 )
 
-func main() {
+func TestMain(m *testing.M) {
+	code := m.Run()
+	os.Exit(code)
+}
+
+func Router() *mux.Router {
 	rotas := mux.NewRouter()
+
 	rotas.HandleFunc("/health", controllers.HealthCheck).Methods("GET")
 
 	//Webhook
@@ -84,22 +83,5 @@ func main() {
 	rotas.HandleFunc("/group", controllers.GetAllGroup).Methods("GET")
 	rotas.HandleFunc("/group/{id}", controllers.DeleteGroupMembers).Methods("DELETE")
 
-	Port, _ := strconv.Atoi(os.Getenv("PORT"))
-	if Port == 0 {
-		Port = 3001
-	}
-
-	log.Println("Server running in port:", Port)
-
-	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
-		AllowedMethods: []string{"GET", "POST", "DELETE", "PUT", "OPTIONS"},
-		AllowedHeaders: []string{"Accept", "Content-Type", "Content-Length", "Accept-Encoding", "Authorization", "X-CSRF-Token"},
-	})
-
-	cr := cron.New()
-	cr.AddFunc("0 0 06 * * *", controllers.SendWelcomeMessage)
-	cr.Start()
-
-	http.ListenAndServe(fmt.Sprintf(":%d", Port), c.Handler(rotas))
+	return rotas
 }

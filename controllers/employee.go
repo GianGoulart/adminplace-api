@@ -18,7 +18,7 @@ func GetEmployeeByID(w http.ResponseWriter, r *http.Request) {
 	responseRequest(w, employee, err)
 }
 
-//GetEmployeeByAny
+// GetEmployeeByAny rota: /employee/search
 func GetEmployeeByAny(w http.ResponseWriter, r *http.Request) {
 	validationRequest(w, r)
 	obj := decoderRequest(r, &models.Employee{})

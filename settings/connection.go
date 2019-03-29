@@ -80,6 +80,7 @@ func (a *App) OpenConnection() (*App, error) {
 
 //GetDNS representa a recuperação do acesso ao banco
 func (a *App) GetDNS() string {
+
 	var (
 		user     string
 		password string

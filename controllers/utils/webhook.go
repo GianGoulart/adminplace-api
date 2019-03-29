@@ -1,4 +1,4 @@
-package controllers
+package utils
 
 import (
 	"encoding/json"
@@ -32,10 +32,10 @@ func GetWebhook(w http.ResponseWriter, r *http.Request) {
 
 // PostWebhook recebe os eventos de mensagens do facebook
 func PostWebhook(w http.ResponseWriter, r *http.Request) {
-	validationRequest(w, r)
+	ValidationRequest(w, r)
 	vars := mux.Vars(r)
 	idIntegration, _ := strconv.Atoi(vars["id"])
-	obj := decoderRequest(r, &models.MessagesWebhook{})
+	obj := DecoderRequest(r, &models.MessagesWebhook{})
 	mw := obj.(models.MessagesWebhook)
 
 	messagingEvents := mw.Entry[0].Messaging
@@ -54,5 +54,5 @@ func PostWebhook(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	responseRequest(w, up, err)
+	ResponseRequest(w, up, err)
 }

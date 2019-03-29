@@ -1,4 +1,4 @@
-package controllers
+package utils
 
 import (
 	"encoding/json"
@@ -10,7 +10,8 @@ const (
 	isNull = "Erro: Objeto vazio ou nulo"
 )
 
-var decoderRequest = func(request *http.Request, obj interface{}) interface{} {
+//DecoderRequest esta função faz o decode de qualquer struct
+func DecoderRequest(request *http.Request, obj interface{}) interface{} {
 	body, _ := ioutil.ReadAll(request.Body)
 
 	err := json.Unmarshal(body, &obj)
@@ -21,14 +22,16 @@ var decoderRequest = func(request *http.Request, obj interface{}) interface{} {
 	return obj
 }
 
-var validationRequest = func(w http.ResponseWriter, r *http.Request) {
+//ValidationRequest valida se a request não é nula
+func ValidationRequest(w http.ResponseWriter, r *http.Request) {
 	if r == nil {
 		w.WriteHeader(http.StatusNoContent)
 		w.Write([]byte(isNull))
 	}
 }
 
-var responseRequest = func(w http.ResponseWriter, obj interface{}, err error) {
+//ResponseRequest monta o response para envio
+func ResponseRequest(w http.ResponseWriter, obj interface{}, err error) {
 	w.Header().Set("content-type", "text/json; charset=utf-8")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

@@ -1,4 +1,4 @@
-package controllers
+package users
 
 import (
 	"encoding/json"
@@ -7,8 +7,10 @@ import (
 	"net/http"
 	"strconv"
 
+	"bitbucket.org/magazine-ondemand/adminplace-api/controllers/utils"
 	"bitbucket.org/magazine-ondemand/adminplace-api/models"
 	"bitbucket.org/magazine-ondemand/adminplace-api/repository"
+
 	"github.com/gorilla/mux"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -26,7 +28,7 @@ const (
 
 // Authenticate rota: /user/{id}
 func Authenticate(w http.ResponseWriter, r *http.Request) {
-	validationRequest(w, r)
+	utils.ValidationRequest(w, r)
 	var obj = models.Authenticate{}
 	body, _ := ioutil.ReadAll(r.Body)
 	err := json.Unmarshal(body, &obj)
@@ -37,12 +39,12 @@ func Authenticate(w http.ResponseWriter, r *http.Request) {
 
 	user, err := repository.Authenticate(obj)
 
-	responseRequest(w, user, err)
+	utils.ResponseRequest(w, user, err)
 }
 
 // SendEmail rota: /sendEmail/{email}
 func SendEmail(w http.ResponseWriter, r *http.Request) {
-	validationRequest(w, r)
+	utils.ValidationRequest(w, r)
 	vars := mux.Vars(r)
 	email := vars["email"]
 	fmt.Println(email)
@@ -118,42 +120,42 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["id"])
 	user, err := repository.GetUserByID(id)
-	responseRequest(w, user, err)
+	utils.ResponseRequest(w, user, err)
 }
 
 // GetAllUser rota: /user
 func GetAllUser(w http.ResponseWriter, r *http.Request) {
 	user, err := repository.GetAllUser()
-	responseRequest(w, user, err)
+	utils.ResponseRequest(w, user, err)
 }
 
 //GetUserByAny rota: /user/search
 func GetUserByAny(w http.ResponseWriter, r *http.Request) {
-	validationRequest(w, r)
-	obj := decoderRequest(r, &models.User{})
+	utils.ValidationRequest(w, r)
+	obj := utils.DecoderRequest(r, &models.User{})
 	i := obj.(*models.User)
 	user, err := repository.GetUserByAny(i)
-	responseRequest(w, user, err)
+	utils.ResponseRequest(w, user, err)
 
 }
 
 // CreateUser rota: /user
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	validationRequest(w, r)
-	obj := decoderRequest(r, &models.User{})
+	utils.ValidationRequest(w, r)
+	obj := utils.DecoderRequest(r, &models.User{})
 	us := obj.(*models.User)
 	user, err := repository.CreateUser(us)
-	responseRequest(w, user, err)
+	utils.ResponseRequest(w, user, err)
 }
 
 // UpdateUser rota: /user
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	validationRequest(w, r)
-	obj := decoderRequest(r, &models.User{})
+	utils.ValidationRequest(w, r)
+	obj := utils.DecoderRequest(r, &models.User{})
 	us := obj.(*models.User)
 
 	user, err := repository.UpdateUser(us)
-	responseRequest(w, user, err)
+	utils.ResponseRequest(w, user, err)
 }
 
 // DeleteUser rota: /user/:id
@@ -162,5 +164,5 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(vars["id"])
 
 	user, err := repository.DeleteUser(id)
-	responseRequest(w, user, err)
+	utils.ResponseRequest(w, user, err)
 }

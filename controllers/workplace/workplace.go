@@ -1,4 +1,4 @@
-package controllers
+package workplace
 
 import (
 	"bytes"
@@ -15,7 +15,8 @@ import (
 	"bitbucket.org/magazine-ondemand/adminplace-api/models"
 )
 
-func buscaWorkplaceUser(email string, idIntegration int) (*models.WPUser, error) {
+//BuscaWorkplaceUser é uma função para  busca de um email no workplace
+func BuscaWorkplaceUser(email string, idIntegration int) (*models.WPUser, error) {
 	var u models.WPUser
 	config := config.Configuracoes()
 	url := fmt.Sprintf(config.GraphURL + email + "?fields=first_name")
@@ -49,7 +50,8 @@ func buscaWorkplaceUser(email string, idIntegration int) (*models.WPUser, error)
 	return &u, nil
 }
 
-func sendTextMessage(id string, text string, idIntegration int) (*models.MessageResponse, error) {
+//SendTextMessage envia a messagem para um colaborador no workplace
+func SendTextMessage(id string, text string, idIntegration int) (*models.MessageResponse, error) {
 	var mr models.MessageSend
 	var ms models.MessageResponse
 	config := config.Configuracoes()

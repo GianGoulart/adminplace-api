@@ -1,4 +1,4 @@
-package controllers
+package groups
 
 import (
 	"encoding/json"
@@ -11,6 +11,7 @@ import (
 	"bitbucket.org/magazine-ondemand/adminplace-api/config"
 	"bitbucket.org/magazine-ondemand/adminplace-api/models"
 
+	"bitbucket.org/magazine-ondemand/adminplace-api/controllers/utils"
 	"bitbucket.org/magazine-ondemand/adminplace-api/repository"
 	"github.com/gorilla/mux"
 )
@@ -28,13 +29,13 @@ func GetGroupByID(w http.ResponseWriter, r *http.Request) {
 	req, err := http.NewRequest("GET", url, nil)
 	req.Header.Set("Authorization", "Bearer "+integration.Token)
 	if err != nil {
-		responseRequest(w, g, err)
+		utils.ResponseRequest(w, g, err)
 	}
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		responseRequest(w, g, err)
+		utils.ResponseRequest(w, g, err)
 	}
 	defer resp.Body.Close()
 
@@ -43,14 +44,14 @@ func GetGroupByID(w http.ResponseWriter, r *http.Request) {
 	if strconv.Itoa(resp.StatusCode) == "200" {
 		jsonErr := json.Unmarshal(data, &g)
 		if jsonErr != nil {
-			responseRequest(w, g, err)
+			utils.ResponseRequest(w, g, err)
 		}
 	} else {
 		err = errors.New("Erro ao consultar grupo por ID")
-		responseRequest(w, g, err)
+		utils.ResponseRequest(w, g, err)
 	}
 
-	responseRequest(w, g, err)
+	utils.ResponseRequest(w, g, err)
 }
 
 // GetAllGroup rota: /group
@@ -85,7 +86,7 @@ func GetAllGroup(w http.ResponseWriter, r *http.Request) {
 		err = errors.New("Erro ao consultar grupos")
 		fmt.Println(err)
 	}
-	responseRequest(w, g, err)
+	utils.ResponseRequest(w, g, err)
 }
 
 //DeleteGroupMembers exclui todos os membros de um grupo com exceção dos administradores
@@ -118,7 +119,7 @@ func DeleteGroupMembers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	gm = GetGroupMembers(idGroup, integration.Token, "")
-	responseRequest(w, gm, err)
+	utils.ResponseRequest(w, gm, err)
 }
 
 //GetGroupMembers retorna os membros de um grupo
